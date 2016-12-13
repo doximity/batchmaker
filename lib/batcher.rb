@@ -9,7 +9,7 @@ class Batcher
     @mutex    = Mutex.new
     @count    = 0
     @action   = block
-    @logger   = Rails.logger if defined?(Rails)
+    @logger   = logger
     @notifier = notifier
     @stopping  = false
 

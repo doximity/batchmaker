@@ -26,10 +26,15 @@ batcher = Batcher.new(name, size, tick_period, logger, notifier = nil, &block)
 ```
 
 `name` - The name of the queue (for emails, referencing the priority of the worker, e.g. critical, default, low)
+
 `size` - Size of the queue
+
 `tick_period` - The amount of time to wait before processing the queue
+
 `logger` - Rails logger
+
 `notifier` - Bugsnag notifier class (`ExceptionNotification`)
+
 `&block` - Action to occur when the queue is processed (In this case, enqueuing the message data to the specified send email worker)
 
 ```

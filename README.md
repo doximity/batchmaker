@@ -1,8 +1,6 @@
 # Batcher
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/batcher`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The `Batcher` class was originally introduced in https://github.com/doximity/doximity/pull/15766 in order to batch email sends together. This ensures that every email sent will be put on a queue, and will be automatically sent by the system when the queue has hit a certain size or a specified time period has elapsed (whichever comes first).
 
 ## Installation
 
@@ -22,20 +20,27 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The batcher class requires several arguments on initialization:
+```
+batcher = Batcher.new(name, size, tick_period, logger, notifier = nil, &block)
+```
+
+`name` - The name of the queue (for emails, referencing the priority of the worker, e.g. critical, default, low)
+`size` - Size of the queue
+`tick_period` - The amount of time to wait before processing the queue
+`logger` - Rails logger
+`notifier` - Bugsnag notifier class (`ExceptionNotification`)
+`&block` - Action to occur when the queue is processed (In this case, enqueuing the message data to the specified send email worker)
+
+```
+batcher = Batcher.new("email-default", 100, 20, Rails.logger, ExceptionNotification) do |messages|
+  Emails::SendEmailDefaultWorker(messages.as_json)
+end
+```
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/batcher. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+To install this gem onto your local machine, run bundle exec rake install. To release a new version, update the VERSION number in lib/batcher.rb, and then follow the instructions for releasing it as a private gem on Gemfury.
 

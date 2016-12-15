@@ -1,5 +1,5 @@
 class Batcher
-  VERSION = '0.1.0'
+  VERSION = '0.1.1'
   StoppedError = Class.new(StandardError)
 
   def initialize(name, size, tick_period, on_error: nil, &block)

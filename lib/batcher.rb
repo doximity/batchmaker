@@ -88,7 +88,7 @@ class Batcher
           rescue => e
             error "batch with #{batch.size} failed to process"
             debug "batch content when failed: #{batch.inspect}"
-            @on_error.call
+            @on_error.call(e, ident_str)
             next
           ensure
             batch = []

@@ -9,7 +9,6 @@ class Batcher
     @mutex    = Mutex.new
     @count    = 0
     @action   = block
-    @logger   = Batcher.logger
     @on_error = on_error
     @stopping  = false
 
@@ -124,15 +123,19 @@ class Batcher
   end
 
   def error(msg)
-    @logger.error "#{ident_str} error: #{msg}"
+    logger.error "#{ident_str} error: #{msg}"
   end
 
   def info(msg)
-    @logger.info "#{ident_str} info: #{msg}"
+    logger.info "#{ident_str} info: #{msg}"
   end
 
   def debug(msg)
-    @logger.debug "#{ident_str} debug: #{msg}"
+    logger.debug "#{ident_str} debug: #{msg}"
+  end
+
+  def logger
+    Batcher.logger || Batcher::NullLogger
   end
 end
 

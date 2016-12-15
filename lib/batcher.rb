@@ -1,3 +1,5 @@
+require 'batcher/null_logger'
+
 class Batcher
   VERSION = '0.1.1'
   StoppedError = Class.new(StandardError)
@@ -64,11 +66,11 @@ class Batcher
   end
 
   def self.logger
-    @@logger
+    @logger
   end
 
   def self.logger=(logger)
-    @@logger = logger
+    @logger = logger
   end
 
   private

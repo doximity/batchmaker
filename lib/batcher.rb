@@ -1,17 +1,16 @@
-require 'batcher/railtie' if defined?(Rails)
+require 'batcher/null_logger'
 
 class Batcher
-  VERSION = '0.1.0'
+  VERSION = '0.1.1'
   StoppedError = Class.new(StandardError)
 
-  def initialize(name, size, tick_period, on_error, &block)
+  def initialize(name, size, tick_period, on_error: nil, &block)
     @name     = name
     @size     = size
     @queue    = Queue.new
     @mutex    = Mutex.new
     @count    = 0
     @action   = block
-    @logger   = Batcher.logger
     @on_error = on_error
     @stopping  = false
 
@@ -66,6 +65,14 @@ class Batcher
     @thread.join
   end
 
+  def self.logger
+    @logger
+  end
+
+  def self.logger=(logger)
+    @logger = logger
+  end
+
   private
 
   def run
@@ -88,7 +95,7 @@ class Batcher
           rescue => e
             error "batch with #{batch.size} failed to process"
             debug "batch content when failed: #{batch.inspect}"
-            @on_error.call(e, ident_str)
+            @on_error.call(e, ident_str) if @on_error
             next
           ensure
             batch = []
@@ -118,14 +125,20 @@ class Batcher
   end
 
   def error(msg)
-    @logger.error "#{ident_str} error: #{msg}"
+    logger.error "#{ident_str} error: #{msg}"
   end
 
   def info(msg)
-    @logger.info "#{ident_str} info: #{msg}"
+    logger.info "#{ident_str} info: #{msg}"
   end
 
   def debug(msg)
-    @logger.debug "#{ident_str} debug: #{msg}"
+    logger.debug "#{ident_str} debug: #{msg}"
+  end
+
+  def logger
+    Batcher.logger || NullLogger
   end
 end
+
+require 'batcher/railtie' if defined?(Rails)

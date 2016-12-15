@@ -1,16 +1,18 @@
+require 'batcher/railtie' if defined?(Rails)
+
 class Batcher
   VERSION = '0.1.0'
   StoppedError = Class.new(StandardError)
 
-  def initialize(name, size, tick_period, logger, notifier = nil, &block)
+  def initialize(name, size, tick_period, on_error, &block)
     @name     = name
     @size     = size
     @queue    = Queue.new
     @mutex    = Mutex.new
     @count    = 0
     @action   = block
-    @logger   = logger
-    @notifier = notifier
+    @logger   = Batcher.logger
+    @on_error = on_error
     @stopping  = false
 
     # Main thread that process the batches
@@ -86,7 +88,7 @@ class Batcher
           rescue => e
             error "batch with #{batch.size} failed to process"
             debug "batch content when failed: #{batch.inspect}"
-            @notifier.log_and_notify(e, batcher_id: ident_str) unless @notifier.nil?
+            @on_error.call
             next
           ensure
             batch = []

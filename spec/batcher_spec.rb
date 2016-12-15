@@ -9,20 +9,22 @@ RSpec.describe Batcher do
     -> (batch) { queue << batch }
   end
 
-  before do
-    allow(Batcher).to receive(:logger).and_return(logger)
-    allow(logger).to receive(:info)
-    allow(logger).to receive(:error)
-    allow(logger).to receive(:debug)
-  end
-
   it "call actions with batch of defined sizes" do
     batcher = described_class.new("test", 10, 1, on_error: on_error, &action)
     20.times.each { |i| batcher << i  }
     batcher.shutdown!
 
     batches = consume(queue)
-    expect(batches).to eq [Array(0..9), Array(10..19)]
+    expect(batches).to eq([Array(0..9), Array(10..19)])
+  end
+
+  it "works without an on_error callback" do
+    batcher = described_class.new("test", 10, 1, &action)
+    20.times.each { |i| batcher << i }
+    batcher.shutdown!
+
+    batches = consume(queue)
+    expect(batches).to eq([Array(0..9), Array(10..19)])
   end
 
   it "calls actions respecting max size when ticking" do

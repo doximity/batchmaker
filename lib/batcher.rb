@@ -135,7 +135,7 @@ class Batcher
   end
 
   def logger
-    Batcher.logger || Batcher::NullLogger
+    Batcher.logger || NullLogger
   end
 end
 

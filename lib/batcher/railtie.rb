@@ -1,6 +1,6 @@
 class Batcher
   class Railtie < Rails::Railtie
-    initializer 'Rails Logger' do
+    initializer 'batcher.configure_logger' do
       Batcher.logger = Rails.logger
     end
   end

@@ -40,7 +40,7 @@ BATCH_EXCEPTION_NOTIFIER = -> (err, ident_str) {
   ExceptionNotification.log_and_notify(err, batcher_id: ident_str)
 }
 
-batcher = Batcher.new("email-default", 100, 20, BATCH_EXCEPTION_NOFITIER) do |messages|
+batcher = Batcher.new("email-default", 100, 20, on_error: BATCH_EXCEPTION_NOFITIER) do |messages|
   Emails::SendEmailDefaultWorker(messages.as_json)
 end
 ```

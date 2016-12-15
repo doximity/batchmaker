@@ -22,7 +22,7 @@ Or install it yourself as:
 
 The batcher class requires several arguments on initialization:
 ```
-batcher = Batcher.new(name, size, tick_period, logger, notifier = nil, &block)
+batcher = Batcher.new(name, size, tick_period, on_error: nil, &block)
 ```
 
 `name` - The name of the queue (for emails, referencing the priority of the worker, e.g. critical, default, low)
@@ -31,14 +31,16 @@ batcher = Batcher.new(name, size, tick_period, logger, notifier = nil, &block)
 
 `tick_period` - The amount of time to wait before processing the queue
 
-`logger` - Rails logger
-
-`notifier` - Bugsnag notifier class (`ExceptionNotification`)
+`on_error` - Optional error callback (Proc)
 
 `&block` - Action to occur when the queue is processed (In this case, enqueuing the message data to the specified send email worker)
 
 ```
-batcher = Batcher.new("email-default", 100, 20, Rails.logger, ExceptionNotification) do |messages|
+BATCH_EXCEPTION_NOTIFIER = -> (err, ident_str) {
+  ExceptionNotification.log_and_notify(err, batcher_id: ident_str)
+}
+
+batcher = Batcher.new("email-default", 100, 20, BATCH_EXCEPTION_NOFITIER) do |messages|
   Emails::SendEmailDefaultWorker(messages.as_json)
 end
 ```

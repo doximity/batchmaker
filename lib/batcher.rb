@@ -1,7 +1,7 @@
 require 'batcher/null_logger'
 
 class Batcher
-  VERSION = '0.1.1'
+  VERSION = '0.1.2'
   StoppedError = Class.new(StandardError)
 
   def initialize(name, size, tick_period, on_error: nil, &block)
@@ -93,8 +93,7 @@ class Batcher
             @action.(batch.freeze)
             info "batch processed with #{batch.size} items"
           rescue => e
-            error "batch with #{batch.size} failed to process"
-            debug "batch content when failed: #{batch.inspect}"
+            error "batch with #{batch.size} failed to process due to '#{e.message}' - batch: #{batch.inspect}"
             @on_error.call(e, ident_str) if @on_error
             next
           ensure

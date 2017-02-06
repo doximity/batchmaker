@@ -1,7 +1,7 @@
 require 'batcher/null_logger'
 
 class Batcher
-  VERSION = '0.1.1'
+  VERSION = '0.1.2'
   StoppedError = Class.new(StandardError)
 
   def initialize(name, size, tick_period, on_error: nil, &block)

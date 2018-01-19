@@ -1,6 +1,6 @@
 # Batchmaker
 
-The Batchmaker is a simply utility that using a separate thread and a atomic queue, easily allows to
+The Batchmaker is a simply utility that using a separate thread and an atomic queue, easily allows to
 store objects on the queue and perform a operation on a batch of the objects. The batch is
 controlled by a maximum size and a tick period, ensuring that the batch have at most N objects or
 that at most M time-unit have elapsed.
@@ -46,6 +46,10 @@ BATCH_EXCEPTION_NOTIFIER = -> (err, ident_str) {
 batchmaker = Batchmaker.new("email-default", 100, 20, on_error: BATCH_EXCEPTION_NOTIFIER) do |batch|
   Emails::SendEmailDefaultWorker(batch.as_json)
 end
+
+# Add items to the batchmaker queue
+batchmaker << 1
+batchmaker << 2
 ```
 
 ## Development

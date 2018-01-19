@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'batcher'
+require 'batchmaker/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "batcher"
-  spec.version       = Batcher::VERSION
+  spec.name          = "batchmaker"
+  spec.version       = Batchmaker::VERSION
   spec.authors       = ["Rodrigo Kochenburger", "Krish Rajagopalan"]
   spec.email         = ["rodrigo@doximity.com", "krajagopalan@doximity.com"]
 
-  spec.summary       = %q{Extraction of the batcher class for email queuing}
-  spec.description   = %q{Extraction of the batcher class for email queuing}
-  spec.homepage      = "https://github.com/doximity/batcher"
+  spec.summary       = %q{Async queue system that batches items together based on time and size}
+  spec.description   = %q{Async queue system that batches items together based on time and size}
+  spec.homepage      = "https://github.com/doximity/batchmaker"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

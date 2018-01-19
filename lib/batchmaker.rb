@@ -1,7 +1,6 @@
-require 'batcher/null_logger'
+require 'batchmaker/null_logger'
 
-class Batcher
-  VERSION = '0.1.3'.freeze
+class Batchmaker
   StoppedError = Class.new(StandardError)
 
   def initialize(name, size, tick_period, on_error: nil, &block)
@@ -65,13 +64,15 @@ class Batcher
     @thread.join
   end
 
+  def self.logger=(logger)
+    @logger = logger
+  end
+
   def self.logger
     @logger
   end
 
-  def self.logger=(logger)
-    @logger = logger
-  end
+  self.logger = NullLogger.new
 
   private
 
@@ -136,8 +137,8 @@ class Batcher
   end
 
   def logger
-    Batcher.logger || NullLogger
+    self.class.logger
   end
 end
 
-require 'batcher/railtie' if defined?(Rails)
+require 'batchmaker/railtie' if defined?(Rails)

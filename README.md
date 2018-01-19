@@ -1,6 +1,9 @@
 # Batchmaker
 
-The `Batchmaker` class was originally introduced in https://github.com/doximity/doximity/pull/15766 in order to batch email sends together. This ensures that every email sent will be put on a queue, and will be automatically sent by the system when the queue has hit a certain size or a specified time period has elapsed (whichever comes first).
+The Batchmaker is a simply utility that using a separate thread and a atomic queue, easily allows to
+store objects on the queue and perform a operation on a batch of the objects. The batch is
+controlled by a maximum size and a tick period, ensuring that the batch have at most N objects or
+that at most M time-unit have elapsed.
 
 ## Installation
 

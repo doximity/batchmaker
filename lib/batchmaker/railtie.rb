@@ -1,7 +1,7 @@
-class Batcher
+class Batchmaker
   class Railtie < Rails::Railtie
     initializer 'batcher.configure_logger' do
-      Batcher.logger = Rails.logger
+      Batchmaker.logger = Rails.logger
     end
   end
 end

@@ -1,9 +1,9 @@
 require "spec_helper"
 
-RSpec.describe Batcher do
+RSpec.describe Batchmaker do
   let(:queue) { Queue.new }
   let(:logger) { double(:logger) }
-  let(:on_error) { Proc.new { puts "logs error" } }
+  let(:on_error) { -> (err, ident_str) { } }
 
   let :action do
     -> (batch) { queue << batch }
@@ -67,7 +67,7 @@ RSpec.describe Batcher do
   it "fails to add items after shutdown" do
     batcher = described_class.new("test", 10, 10, on_error: on_error, &action)
     batcher.shutdown!
-    expect { batcher << 1 }.to raise_error(Batcher::StoppedError)
+    expect { batcher << 1 }.to raise_error(Batchmaker::StoppedError)
   end
 
   private

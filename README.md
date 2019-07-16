@@ -51,7 +51,6 @@ end
 batchmaker << 1
 batchmaker << 2
 ```
-
 # Development
 
 ## Gem documentation

@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 RSpec.describe Batchmaker do
   let(:queue) { Queue.new }
   let(:logger) { double(:logger) }
-  let(:on_error) { -> (err, ident_str) { } }
+  let(:on_error) { ->(err, ident_str) {} }
 
   let :action do
-    -> (batch) { queue << batch }
+    ->(batch) { queue << batch }
   end
 
   it "call actions with batch of defined sizes" do
     batcher = described_class.new("test", 10, 1, on_error: on_error, &action)
-    20.times.each { |i| batcher << i  }
+    20.times.each { |i| batcher << i }
     batcher.shutdown!
 
     batches = consume(queue)
@@ -43,8 +45,10 @@ RSpec.describe Batchmaker do
   it "handles errors properly" do
     already_failed = false
     batcher = described_class.new("test", 5, 1, on_error: on_error) do |batch|
-      will_fail, already_failed = !already_failed, true
+      will_fail = !already_failed
+      already_failed = true
       raise "some error" if will_fail
+
       queue << batch
     end
 
@@ -74,7 +78,7 @@ RSpec.describe Batchmaker do
 
   def consume(queue)
     consumed = []
-    consumed << queue.pop(true) while queue.size > 0
+    consumed << queue.pop(true) until queue.empty?
     consumed
   end
 end

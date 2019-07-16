@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'batchmaker/version'
+require "batchmaker/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "batchmaker"
@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Doximity"]
   spec.email         = ["engineering@doximity.com"]
 
-  spec.summary       = %q{Async queue system that batches items together based on time and size}
-  spec.description   = %q{Async queue system that batches items together based on time and size}
+  spec.summary       = "Async queue system that batches items together based on time and size"
+  spec.description   = "Async queue system that batches items together based on time and size"
   spec.homepage      = "https://github.com/doximity/batchmaker"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

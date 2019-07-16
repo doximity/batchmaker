@@ -1,7 +1,13 @@
-require 'batchmaker/null_logger'
+# frozen_string_literal: true
+
+require "batchmaker/null_logger"
 
 class Batchmaker
   StoppedError = Class.new(StandardError)
+
+  class << self
+    attr_accessor :logger
+  end
 
   def initialize(name, size, tick_period, on_error: nil, &block)
     @name     = name
@@ -11,7 +17,7 @@ class Batchmaker
     @count    = 0
     @action   = block
     @on_error = on_error
-    @stopping  = false
+    @stopping = false
 
     # Main thread that process the batches
     @thread = Thread.new(&method(:run))
@@ -23,13 +29,11 @@ class Batchmaker
   end
 
   def running?
-    ["run", "sleep"].include?(@thread.status) && !@stopping
+    %w[run sleep].include?(@thread.status) && !@stopping
   end
 
   def <<(item)
-    if !running?
-      raise StoppedError, "failure to queue item, #{ident_str} has already stopped"
-    end
+    raise StoppedError, "failure to queue item, #{ident_str} has already stopped" unless running?
 
     @mutex.synchronize do
       @queue << [:add, item]
@@ -37,7 +41,7 @@ class Batchmaker
 
       if @count >= @size
         @count = 0
-        @queue << [:process, :size]
+        @queue << %i[process size]
       end
     end
 
@@ -64,14 +68,6 @@ class Batchmaker
     @thread.join
   end
 
-  def self.logger=(logger)
-    @logger = logger
-  end
-
-  def self.logger
-    @logger
-  end
-
   self.logger = NullLogger.new
 
   private
@@ -93,9 +89,9 @@ class Batchmaker
           begin
             @action.(batch.freeze)
             debug "batch processed with #{batch.size} items"
-          rescue => e
+          rescue StandardError => e
             error "batch with #{batch.size} failed to process due to '#{e.message}' - batch: #{batch.inspect}"
-            @on_error.call(e, ident_str) if @on_error
+            @on_error&.call(e, ident_str)
             next
           ensure
             batch = []
@@ -115,7 +111,7 @@ class Batchmaker
       sleep(period)
 
       @mutex.synchronize do
-        @queue << [:process, :tick]
+        @queue << %i[process tick]
       end
     end
   end
@@ -141,4 +137,4 @@ class Batchmaker
   end
 end
 
-require 'batchmaker/railtie' if defined?(Rails)
+require "batchmaker/railtie" if defined?(Rails)

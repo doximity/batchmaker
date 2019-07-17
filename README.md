@@ -22,7 +22,6 @@ Or install it yourself as:
     $ gem install batchmaker
 
 ## Usage
-
 The batchmaker class requires several arguments on initialization:
 ```
 batchmaker = Batchmaker.new(name, size, tick_period, on_error: nil, &block)

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    batchmaker (1.0.0)
+    batchmaker (1.0.1.aramirez1)
 
 GEM
   remote: https://rubygems.org/
@@ -68,4 +68,4 @@ DEPENDENCIES
   sdoc
 
 BUNDLED WITH
-   1.17.2
+   1.17.3

@@ -2,6 +2,7 @@
 
 require "batchmaker/null_logger"
 
+# rubocop:disable Metrics/ClassLength
 class Batchmaker
   StoppedError = Class.new(StandardError)
 
@@ -9,6 +10,7 @@ class Batchmaker
     attr_accessor :logger
   end
 
+  # rubocop:disable Metrics/MethodLength
   def initialize(name, size, tick_period, on_error: nil, &block)
     @name     = name
     @size     = size
@@ -27,6 +29,7 @@ class Batchmaker
     @tick.abort_on_exception = true
     @tick.priority = 1
   end
+  # rubocop:enable Metrics/MethodLength
 
   def running?
     %w[run sleep].include?(@thread.status) && !@stopping
@@ -72,6 +75,7 @@ class Batchmaker
 
   private
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def run
     batch = []
 
@@ -105,6 +109,7 @@ class Batchmaker
 
     info "exiting batch processing loop"
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def tick(period)
     loop do
@@ -136,5 +141,6 @@ class Batchmaker
     self.class.logger
   end
 end
+# rubocop:enable Metrics/ClassLength
 
 require "batchmaker/railtie" if defined?(Rails)

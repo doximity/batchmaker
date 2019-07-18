@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Batchmaker do
   let(:queue) { Queue.new }
-  let(:logger) { double(:logger) }
+  let(:logger) { instance_double("Logger") }
   let(:on_error) { ->(err, ident_str) {} }
 
   let :action do

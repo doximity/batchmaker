@@ -1,1 +1,3 @@
-require 'batchmaker'
+# frozen_string_literal: true
+
+require "batchmaker"

@@ -22,7 +22,6 @@ Or install it yourself as:
     $ gem install batchmaker
 
 ## Usage
-
 The batchmaker class requires several arguments on initialization:
 ```
 batchmaker = Batchmaker.new(name, size, tick_period, on_error: nil, &block)
@@ -52,9 +51,18 @@ batchmaker << 1
 batchmaker << 2
 ```
 
-## Development
+# Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Gem documentation
 
-To install this gem onto your local machine, run bundle exec rake install. To release a new version, update the VERSION number in lib/batchmaker.rb, and then follow the instructions for releasing it as a private gem on Gemfury.
+You can find the documentation by going to CircleCI, looking for the `build` job, going to Artifacts and clicking on `index.html`. A visual guide on this can be found in our wiki at [Gems Development: Where to find documentation for our gems](https://wiki.doximity.com/articles/gems-development-where-to-find-documentation-for-our-gems).
 
+## Gem development
+
+After checking out the repo, run `bundle install` to install dependencies. Then, run `rake spec` to run the tests.
+You can also run `bundle console` for an interactive prompt that will allow you to experiment.
+
+This repository uses a gem publishing mechanism on the CI configuration, meaning most work related with cutting a new
+version is done automatically.
+
+To release a new version, follow the [wiki instructions](https://wiki.doximity.com/articles/gems-development-releasing-new-versions).

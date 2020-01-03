@@ -121,7 +121,7 @@ workflows:
       - gem/publish:
           <<: *version_tags_only
           name: gem-publish
-          to_jfrog: true
+          to_nexus: true
           pre_release: false
           requires:
             - gem-build

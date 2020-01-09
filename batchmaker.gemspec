@@ -14,12 +14,6 @@ Gem::Specification.new do |spec|
   spec.description   = "Async queue system that batches items together based on time and size"
   spec.homepage      = "https://github.com/doximity/batchmaker"
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  raise "RubyGems 2.0 or newer is required to protect against public gem pushes." unless spec.respond_to?(:metadata)
-
-  spec.metadata["allowed_push_host"] = "https://doximity.jfrog.io/doximity/api/gems/gems-local"
-
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(bin|test|spec|features|vendor|tasks|tmp)/})
   end

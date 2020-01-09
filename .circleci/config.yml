@@ -8,6 +8,8 @@ executors:
     resource_class: small
     docker:
       - image: circleci/ruby:latest
+        environment:
+          BUNDLE_VERSION: "~> 1.17"
 
 # yaml anchor filters
 master_only: &master_only
@@ -34,6 +36,10 @@ jobs:
     executor: ruby-latest
     steps:
       - checkout
+      - run:
+          name: Install Bundler specific version
+          command: |
+            gem install bundler --version "${BUNDLE_VERSION}" --force
       - restore_cache:
           keys:
             - v1-bundle-{{ checksum "Gemfile.lock" }}-
@@ -73,6 +79,7 @@ workflows:
           <<: *master_only
       - gem/build:
           <<: *master_only
+          executor: ruby-latest
           name: gem-build
           requires:
             - build
@@ -83,6 +90,7 @@ workflows:
           <<: *pr_only
       - gem/build:
           <<: *pr_only
+          executor: ruby-latest
           name: gem-build
           requires:
             - build
@@ -94,7 +102,7 @@ workflows:
       - gem/publish:
           <<: *pr_only
           name: gem-publish
-          to_jfrog: true
+          to_nexus: true
           pre_release: true
           requires:
             - pre-release-approval
@@ -106,13 +114,14 @@ workflows:
           <<: *version_tags_only
       - gem/build:
           <<: *version_tags_only
+          executor: ruby-latest
           name: gem-build
           requires:
             - build
       - gem/publish:
           <<: *version_tags_only
           name: gem-publish
-          to_jfrog: true
+          to_nexus: true
           pre_release: false
           requires:
             - gem-build

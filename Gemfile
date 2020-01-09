@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+# BEFORE changing this file, read https://wiki.doximity.com/articles/gemfile-maintenance
+source "https://artifacts.dox.support/repository/gems"
 
 # Specify your gem's dependencies in batcher.gemspec
 gemspec

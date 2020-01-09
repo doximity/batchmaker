@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    batchmaker (1.0.1)
+    batchmaker (1.0.2)
 
 GEM
-  remote: https://rubygems.org/
+  remote: https://artifacts.dox.support/repository/gems/
   specs:
     ast (2.4.0)
     diff-lcs (1.3)

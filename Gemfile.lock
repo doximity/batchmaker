@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    batchmaker (1.0.2.jmonteiro1)
+    batchmaker (1.0.2)
 
 GEM
   remote: https://artifacts.dox.support/repository/gems/

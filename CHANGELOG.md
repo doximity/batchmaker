@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0.2.jmonteiro1 01/02/2020
+## 1.0.2 01/09/2020
 
   * Publish gem on Nexus, and fetch gems from Nexus
 

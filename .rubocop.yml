@@ -1,5 +1,6 @@
 ---
 inherit_gem:
+  dox-best-practices: .rubocop.yml
   dox-style:
   - ".rubocop.yml"
 

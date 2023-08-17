@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  gem: doximity/gem-publisher@0
-
 executors:
   ruby-2-6:
     resource_class: small
@@ -77,52 +74,8 @@ workflows:
     jobs:
       - build:
           <<: *master_only
-      - gem/build:
-          <<: *master_only
-          executor: ruby-2-6
-          name: gem-build
-          requires:
-            - build
 
   pull-requests:
     jobs:
       - build:
           <<: *pr_only
-      - gem/build:
-          <<: *pr_only
-          executor: ruby-2-6
-          name: gem-build
-          requires:
-            - build
-      - pre-release-approval:
-          <<: *pr_only
-          type: approval
-          requires:
-            - gem-build
-      - gem/publish:
-          <<: *pr_only
-          name: gem-publish
-          to_nexus: true
-          pre_release: true
-          requires:
-            - pre-release-approval
-          context: artifact_publishing
-
-  final-release:
-    jobs:
-      - build:
-          <<: *version_tags_only
-      - gem/build:
-          <<: *version_tags_only
-          executor: ruby-2-6
-          name: gem-build
-          requires:
-            - build
-      - gem/publish:
-          <<: *version_tags_only
-          name: gem-publish
-          to_nexus: true
-          pre_release: false
-          requires:
-            - gem-build
-          context: artifact_publishing
